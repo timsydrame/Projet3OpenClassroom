@@ -1,6 +1,7 @@
 package backend_spring.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,12 +17,23 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "The rental name cannot be null")
+    @NotBlank(message = "The rental name cannot be blank")
+    @Size(min = 3, max = 255, message = "The rental name must be between 3 and 255 characters")
     private String name;
+
+    @NotNull(message = "Surface cannot be null")
+    @DecimalMin(value = "0.1", message = "Surface must be greater than zero")
     private BigDecimal surface;
+
+    @NotNull(message = "Price cannot be null")
+    @DecimalMin(value = "0.1", message = "Price must be greater than zero")
     private BigDecimal price;
+
+    @Size(max = 255, message = "Picture URL cannot exceed 255 characters")
     private String picture;
 
-    @Column(length = 2000)
+    @Size(max = 2000, message = "Description cannot exceed 2000 characters")
     private String description;
 
     @ManyToOne
